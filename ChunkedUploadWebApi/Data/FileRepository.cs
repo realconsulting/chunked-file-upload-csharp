@@ -5,7 +5,7 @@ using System.IO;
 
 namespace ChunkedUploadWebApi.Data
 {
-    public abstract class FileRepository
+    public abstract class FileRepository : IFileRepository
     {
         public abstract void Persist(string id, int chunkNumber, byte[] buffer);
 
@@ -115,5 +115,13 @@ namespace ChunkedUploadWebApi.Data
                 throw new NotSupportedException();
             }
         }
+    }
+
+    public interface IFileRepository
+    {
+        void Persist(string id, int chunkNumber, byte[] buffer);
+        byte[] Read(string id, int chunkNumber);
+        void WriteToStream(Stream stream, Session session);
+        Stream GetFileStream(Session session);
     }
 }

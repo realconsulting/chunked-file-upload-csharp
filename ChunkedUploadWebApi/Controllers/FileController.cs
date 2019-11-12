@@ -25,11 +25,11 @@ namespace ChunkedUploadWebApi.Controllers
     [EnableCors("MyPolicy")]
     public class FileController : Controller
     {
-        private static UploadService uploadService = new UploadService(new LocalFileSystemRepository());
+        private IUploadService uploadService;
 
-        public FileController()
+        public FileController(IUploadService _uploadService)
         {
-
+            uploadService = _uploadService;
         }
 
         /// <summary>

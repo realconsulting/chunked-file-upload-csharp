@@ -11,6 +11,8 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.Extensions.PlatformAbstractions;
 using ChunkedUploadWebApi.Controllers;
+using ChunkedUploadWebApi.Data;
+using ChunkedUploadWebApi.Service;
 
 namespace ChunkedUploadWebApi
 {
@@ -41,6 +43,9 @@ namespace ChunkedUploadWebApi
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
+
+            services.AddTransient<IFileRepository, LocalFileSystemRepository>();
+            services.AddSingleton<IUploadService, UploadService>();
         }
 
 

@@ -8,16 +8,15 @@ using System.Collections.Generic;
 
 namespace ChunkedUploadWebApi.Service
 {
-    public class UploadService
+    public class UploadService : IUploadService
     {
-
-
+         
         private const int CHUNK_LIMIT = 1024 * 1024;
 
         Dictionary<String, Session> sessions;
-        FileRepository fileStorage;
+        IFileRepository fileStorage;
 
-        public UploadService(FileRepository storage)
+        public UploadService(IFileRepository storage)
         {
             this.fileStorage = storage;
             sessions = new Dictionary<String, Session>();
@@ -92,5 +91,15 @@ namespace ChunkedUploadWebApi.Service
         public Stream GetFileStream(Session session) {
             return fileStorage.GetFileStream(session);
         }
+    }
+
+    public interface IUploadService
+    {
+        Session createSession(long user, String fileName, int chunkSize, long fileSize);
+        Session getSession(String id);
+        List<Session> getAllSessions();
+        void persistBlock(String sessionId, long userId, int chunkNumber, byte[] buffer);
+        void WriteToStream(Stream stream, Session session);
+        Stream GetFileStream(Session session);
     }
 }
